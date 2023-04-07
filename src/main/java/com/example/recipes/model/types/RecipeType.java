@@ -1,4 +1,4 @@
-package com.example.recipes.model;
+package com.example.recipes.model.types;
 
 public enum RecipeType {
     REGGELI,
