@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -22,6 +22,6 @@ public class Ingredient {
     @GeneratedValue
     private Long id;
     private String name;
-    @ManyToMany
-    private List<Recipe> recipes;
+    @ManyToMany(mappedBy = "ingredients")
+    private Set<Recipe> recipes;
 }
