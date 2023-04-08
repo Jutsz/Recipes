@@ -4,10 +4,7 @@ import com.example.recipes.model.Recipe;
 import com.example.recipes.model.dto.RecipeDTO;
 import com.example.recipes.model.types.RecipeType;
 import com.example.recipes.service.RecipeService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,23 +28,29 @@ public class RecipeController {
         return recipeService.getRecipeById(id);
     }
 
-    public List<RecipeDTO> getRecipeByIngredient(String ingredientName) {
+    @GetMapping("/ingredient")
+    public List<RecipeDTO> getRecipeByIngredient(@RequestBody String ingredientName) {
         return recipeService.getRecipeByIngredient(ingredientName);
     }
 
-    public List<RecipeDTO> getRecipesWithRecipeTypeByIngredient(RecipeType recipeType, String ingredientName) {
+    @GetMapping("/recipetype/ingredient")
+    public List<RecipeDTO> getRecipesWithRecipeTypeByIngredient(@RequestParam RecipeType recipeType,
+                                                                @RequestParam String ingredientName) {
         return recipeService.getRecipesWithRecipeTypeByIngredient(recipeType, ingredientName);
     }
 
-    public void addNewRecipe(Recipe recipe) {
+    @PostMapping
+    public void addNewRecipe(@RequestBody Recipe recipe) {
         recipeService.addNewRecipe(recipe);
     }
 
-    public void updateRecipe(Long id, Recipe recipe) {
+    @PutMapping("/update/{id}")
+    public void updateRecipe(@PathVariable Long id, @RequestBody Recipe recipe) {
         recipeService.updateRecipe(id, recipe);
     }
 
-    public void deleteRecipe(Long id) {
+    @DeleteMapping("/delete/{id}")
+    public void deleteRecipe(@PathVariable Long id) {
         recipeService.deleteRecipe(id);
     }
 }
