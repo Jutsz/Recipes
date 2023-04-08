@@ -21,6 +21,7 @@ public class Recipe {
     private Long id;
 //    @NotBlank
     private String name;
+    @Enumerated(EnumType.STRING)
     private RecipeType recipeType;
     private String text;
     @ManyToMany
