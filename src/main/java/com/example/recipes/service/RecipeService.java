@@ -11,8 +11,8 @@ import java.util.List;
 
 @Service
 public class RecipeService {
-    private RecipeDAO recipeDAO;
-    private RecipeMapper recipeMapper;
+    private final RecipeDAO recipeDAO;
+    private final RecipeMapper recipeMapper;
 
     public RecipeService(RecipeDAO recipeDAO, RecipeMapper recipeMapper) {
         this.recipeDAO = recipeDAO;
@@ -29,16 +29,16 @@ public class RecipeService {
                 .stream()
                 .map(recipeMapper::toDTO)
                 .findFirst()
-                .orElseThrow();
+                .orElse(null);
     }
 
     public List<RecipeDTO> getRecipeByIngredient (String ingredientName){
-        List<Recipe> recipes = recipeDAO.findAllByIngredients_name(ingredientName);
+        List<Recipe> recipes = recipeDAO.findAllByIngredients_nameContainsIgnoreCase(ingredientName);
         return createDTOFromRecipeList(recipes);
     }
 
     public List<RecipeDTO> getRecipesWithRecipeTypeByIngredient(RecipeType recipeType, String ingredientName){
-        List<Recipe> recipes = recipeDAO.findAllByRecipeTypeIsAndIngredients_name(recipeType, ingredientName);
+        List<Recipe> recipes = recipeDAO.findAllByRecipeTypeIsAndIngredients_nameContainsIgnoreCase(recipeType, ingredientName);
         return createDTOFromRecipeList(recipes);
     }
 
@@ -58,7 +58,7 @@ public class RecipeService {
 
     public List<RecipeDTO> createDTOFromRecipeList(List<Recipe> recipeList){
         return recipeList.stream()
-                .map(recipe -> recipeMapper.toDTO(recipe))
+                .map(recipeMapper::toDTO)
                 .toList();
     }
 
