@@ -45,15 +45,18 @@ public class RecipeService {
     public void addNewRecipe(Recipe recipe){
         recipeDAO.save(recipe);
     }
+    /*TODO make the connection with ingredients*/
 
     public void updateRecipe (Long id, Recipe recipe){
         Recipe recipeToUpdate = recipeDAO.findById(id).orElseThrow();
         recipe.setId(recipeToUpdate.getId());
         recipeDAO.save(recipe);
     }
+    /*TODO make the connection with ingredients*/
 
     public void deleteRecipe(Long id){
         recipeDAO.deleteById(id);
+        /*TODO make sure that deleting a recipe not deletes the ingredients also*/
     }
 
     public List<RecipeDTO> createDTOFromRecipeList(List<Recipe> recipeList){
