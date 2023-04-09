@@ -63,7 +63,7 @@ public class IngredientService {
 
     public void updateIngredient(Long id, IngredientDTO ingredientDTO) {
         Optional<Ingredient> ingredient = ingredientDAO.findById(id);
-        /*TODO finish the method*/
+        /*TODO finish the method, make connection with recipes*/
 
 
     }
