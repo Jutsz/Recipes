@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/recipes")
 public class RecipeController {
 
-    private RecipeService recipeService;
+    private final RecipeService recipeService;
 
     public RecipeController(RecipeService recipeService) {
         this.recipeService = recipeService;
@@ -29,14 +29,15 @@ public class RecipeController {
     }
 
     @GetMapping("/ingredient")
-    public List<RecipeDTO> getRecipeByIngredient(@RequestBody String ingredientName) {
+    public List<RecipeDTO> getRecipeByIngredient(@RequestParam(name="ingredient") String ingredientName) {
         return recipeService.getRecipeByIngredient(ingredientName);
     }
 
     @GetMapping("/recipetype/ingredient")
-    public List<RecipeDTO> getRecipesWithRecipeTypeByIngredient(@RequestParam RecipeType recipeType,
-                                                                @RequestParam String ingredientName) {
-        return recipeService.getRecipesWithRecipeTypeByIngredient(recipeType, ingredientName);
+    public List<RecipeDTO> getRecipesWithRecipeTypeByIngredient(@RequestParam(name="recipeType") String recipeType,
+                                                                @RequestParam(name="ingredient") String ingredientName) {
+        return recipeService.getRecipesWithRecipeTypeByIngredient
+                (RecipeType.valueOf(recipeType.toUpperCase()), ingredientName);
     }
 
     @PostMapping
