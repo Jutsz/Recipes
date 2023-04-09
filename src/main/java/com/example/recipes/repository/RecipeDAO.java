@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface RecipeDAO extends JpaRepository<Recipe, Long> {
-    List<Recipe> findAllByIngredients_name(String ingredientName);
+    List<Recipe> findAllByIngredients_nameContainsIgnoreCase(String ingredientName);
 
-    List<Recipe> findAllByRecipeTypeIsAndIngredients_name(RecipeType recipeType, String ingredientName);
+    List<Recipe> findAllByRecipeTypeIsAndIngredients_nameContainsIgnoreCase(RecipeType recipeType, String ingredientName);
 }
