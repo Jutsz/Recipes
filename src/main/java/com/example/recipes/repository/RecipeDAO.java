@@ -10,4 +10,6 @@ public interface RecipeDAO extends JpaRepository<Recipe, Long> {
     List<Recipe> findAllByIngredients_nameContainsIgnoreCase(String ingredientName);
 
     List<Recipe> findAllByRecipeTypeIsAndIngredients_nameContainsIgnoreCase(RecipeType recipeType, String ingredientName);
+
+    Recipe findByNameContainsIgnoreCase(String recipeName);
 }
