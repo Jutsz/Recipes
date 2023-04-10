@@ -29,4 +29,19 @@ public class IngredientController {
     public List<IngredientDTO> getIngredientByName(@RequestParam(name="name") String ingredientName) {
         return ingredientService.getIngredientByName(ingredientName);
     }
+
+    @PostMapping
+    public void addIngredient(@RequestBody IngredientDTO ingredientDTO) {
+        ingredientService.addIngredient(ingredientDTO);
+    }
+
+    @PutMapping("/update/{id}")
+    public void updateIngredient(@PathVariable Long id, @RequestBody IngredientDTO ingredientDTO) {
+        ingredientService.updateIngredient(id, ingredientDTO);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteIngredient(@PathVariable Long id) {
+        ingredientService.deleteIngredient(id);
+    }
 }
