@@ -8,4 +8,6 @@ import java.util.List;
 public interface IngredientDAO extends JpaRepository<Ingredient, Long> {
 
     List<Ingredient> findAllByNameContainsIgnoreCase(String name);
+
+    Ingredient findByNameContainsIgnoreCase(String name);
 }
