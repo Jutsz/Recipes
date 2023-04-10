@@ -1,3 +1,296 @@
+POST http://localhost:8080/recipes
+Content-Type: application/json
+Content-Length: 172
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "name" : "krumplistészta",
+  "recipeType": "EBÉD",
+  "text": "készítsünk krumplistésztát",
+  "ingredientNames": [
+    "hagyma", "krumpli", "tészta", "olaj"
+  ]}
+
+<> 2023-04-10T174007.500.json
+
+###
+
+POST http://localhost:8080/recipes
+Content-Type: application/json
+Content-Length: 172
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "name" : "krumplistészta",
+  "recipeType": "EBÉD",
+  "text": "készítsünk krumplistésztát",
+  "ingredientNames": [
+    "hagyma", "krumpli", "tészta", "olaj"
+  ]}
+
+<> 2023-04-10T173847.500.json
+
+###
+
+POST http://localhost:8080/recipes
+Content-Type: application/json
+Content-Length: 172
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "name" : "krumplistészta",
+  "recipeType": "EBÉD",
+  "text": "készítsünk krumplistésztát",
+  "ingredientNames": [
+    "hagyma", "krumpli", "tészta", "olaj"
+  ]}
+
+<> 2023-04-10T172615.500.json
+
+###
+
+GET http://localhost:8080/ingredients
+Accept: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-04-10T172136.200.json
+
+###
+
+GET http://localhost:8080/recipes
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-04-10T172130.200.json
+
+###
+
+POST http://localhost:8080/recipes
+Content-Type: application/json
+Content-Length: 172
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "name" : "krumplistészta",
+  "recipeType": "EBÉD",
+  "text": "készítsünk krumplistésztát",
+  "ingredientNames": [
+    "hagyma", "krumpli", "tészta", "olaj"
+  ]}
+
+###
+
+GET http://localhost:8080/ingredients
+Accept: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-04-10T172020.200.json
+
+###
+
+GET http://localhost:8080/recipes
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-04-10T171959.200.json
+
+###
+
+POST http://localhost:8080/recipes
+Content-Type: application/json
+Content-Length: 172
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "name" : "krumplistészta",
+  "recipeType": "EBÉD",
+  "text": "készítsünk krumplistésztát",
+  "ingredientNames": [
+    "hagyma", "krumpli", "tészta", "olaj"
+  ]}
+
+###
+
+GET http://localhost:8080/ingredients
+Accept: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-04-10T171649.200.json
+
+###
+
+GET http://localhost:8080/recipes
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-04-10T171634.200.json
+
+###
+
+POST http://localhost:8080/recipes
+Content-Type: application/json
+Content-Length: 172
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "name" : "krumplistészta",
+  "recipeType": "EBÉD",
+  "text": "készítsünk krumplistésztát",
+  "ingredientNames": [
+    "hagyma", "krumpli", "tészta", "olaj"
+  ]}
+
+###
+
+POST http://localhost:8080/recipes
+Content-Type: application/json
+Content-Length: 172
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "name" : "krumplistészta",
+  "recipeType": "EBÉD",
+  "text": "készítsünk krumplistésztát",
+  "ingredientNames": [
+    "hagyma", "krumpli", "tészta", "olaj"
+  ]}
+
+<> 2023-04-10T171509.500.json
+
+###
+
+GET http://localhost:8080/ingredients
+Accept: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-04-10T170228.200.json
+
+###
+
+GET http://localhost:8080/recipes
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-04-10T170211.200.json
+
+###
+
+POST http://localhost:8080/recipes
+Content-Type: application/json
+Content-Length: 172
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "name" : "krumplistészta",
+  "recipeType": "EBÉD",
+  "text": "készítsünk krumplistésztát",
+  "ingredientNames": [
+    "hagyma", "krumpli", "tészta", "olaj"
+  ]}
+
+###
+
+GET http://localhost:8080/recipes
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-04-10T165715.200.json
+
+###
+
+GET http://localhost:8080/ingredients
+Accept: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-04-10T165658.200.json
+
+###
+
+POST http://localhost:8080/recipes
+Content-Type: application/json
+Content-Length: 172
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "name" : "krumplistészta",
+  "recipeType": "EBÉD",
+  "text": "készítsünk krumplistésztát",
+  "ingredientNames": [
+    "hagyma", "krumpli", "tészta", "olaj"
+  ]}
+
+###
+
+GET http://localhost:8080/ingredients
+Accept: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-04-10T164727.200.json
+
+###
+
+GET http://localhost:8080/recipes
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+<> 2023-04-10T164651.200.json
+
+###
+
+POST http://localhost:8080/recipes
+Content-Type: application/json
+Content-Length: 173
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
+{
+  "name" : "krumplistészta",
+  "recipeType": "EBÉD",
+  "text": "készítsünk krumplistésztát",
+  "ingredientNames": [
+    "hagyma", "krumpli", "tészta", "olaj"
+  ]
+}
+
+###
+
 GET http://localhost:8080/recipes
 Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)

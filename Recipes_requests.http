@@ -11,6 +11,20 @@ Content-Type: application/json
 
 
 ###
+
+POST http://localhost:8080/recipes
+Content-Type: application/json
+
+{
+  "name" : "krumplistészta",
+  "recipeType": "EBÉD",
+  "text": "készítsünk krumplistésztát",
+  "ingredientNames": [
+    "hagyma", "krumpli", "tészta", "olaj"
+  ]}
+
+
+###
 GET http://localhost:8080/recipes/ingredient
 Accept: application/json
 
