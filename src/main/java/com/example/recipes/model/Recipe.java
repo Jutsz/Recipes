@@ -24,19 +24,12 @@ public class Recipe {
     @Enumerated(EnumType.STRING)
     private RecipeType recipeType;
     private String text;
-    @ManyToMany
+    @ManyToMany (cascade = {CascadeType.ALL})
     @JoinTable(
             name="recipes_ingredients",
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
     private Set<Ingredient> ingredients;
-
-    public void addIngredient (Ingredient ingredient) {
-        if (ingredients != null) {
-            ingredients.add(ingredient);
-        }
-    }
-
 
 
 }
