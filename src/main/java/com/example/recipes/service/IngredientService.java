@@ -55,21 +55,22 @@ public class IngredientService {
         }
         return recipes;
     }
-    public void addIngredient(IngredientDTO ingredientDTO) {
-        Ingredient ingredient = new Ingredient();
+    private void createIngredientFromDTO(IngredientDTO ingredientDTO, Ingredient ingredient) {
         ingredient.setName(ingredientDTO.getName());
         Set<Recipe> recipes = getRecipesFromIngredientDTO(ingredientDTO);
-        ingredient.setRecipes(recipes);
+        if (!recipes.isEmpty()) {
+            ingredient.setRecipes(recipes);
+        }
+    }
+    public void addIngredient(IngredientDTO ingredientDTO) {
+        Ingredient ingredient = new Ingredient();
+        createIngredientFromDTO(ingredientDTO, ingredient);
         ingredientDAO.save(ingredient);
     }
 
     public void updateIngredient(Long id, IngredientDTO ingredientDTO) {
         Ingredient ingredient = getIngredientByIdFromDatabase(id);
-        ingredient.setName(ingredientDTO.getName());
-        Set<Recipe> recipes = getRecipesFromIngredientDTO(ingredientDTO);
-        if(!recipes.isEmpty()) {
-            ingredient.setRecipes(recipes);
-        }
+        createIngredientFromDTO(ingredientDTO, ingredient);
         ingredientDAO.save(ingredient);
     }
 
