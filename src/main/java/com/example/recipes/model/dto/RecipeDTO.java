@@ -3,7 +3,7 @@ package com.example.recipes.model.dto;
 import com.example.recipes.model.types.RecipeType;
 import lombok.*;
 
-import java.util.Set;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,5 +15,5 @@ public class RecipeDTO {
     private String name;
     private RecipeType recipeType;
     private String text;
-    private Set<String> ingredientNames;
+    private List<String> ingredientNames;
 }
