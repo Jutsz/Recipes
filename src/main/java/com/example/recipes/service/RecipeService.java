@@ -25,12 +25,12 @@ public class RecipeService {
         this.ingredientDAO = ingredientDAO;
     }
 
-    public List<RecipeDTO> getAllRecipes(){
+    public List<RecipeDTO> getAllRecipes() {
         List<Recipe> recipes = recipeDAO.findAll();
         return createDTOFromRecipeList(recipes);
     }
 
-    public RecipeDTO getRecipeById(Long id){
+    public RecipeDTO getRecipeById(Long id) {
         return recipeDAO.findById(id)
                 .stream()
                 .map(recipeMapper::toDTO)
@@ -38,45 +38,45 @@ public class RecipeService {
                 .orElse(null);
     }
 
-    public List<RecipeDTO> getRecipeByIngredient (String ingredientName){
+    public List<RecipeDTO> getRecipeByIngredient(String ingredientName) {
         List<Recipe> recipes = recipeDAO.findAllByIngredients_nameContainsIgnoreCase(ingredientName);
         return createDTOFromRecipeList(recipes);
     }
 
-    public List<RecipeDTO> getRecipesWithRecipeTypeByIngredient(RecipeType recipeType, String ingredientName){
+    public List<RecipeDTO> getRecipesWithRecipeTypeByIngredient(RecipeType recipeType, String ingredientName) {
         List<Recipe> recipes = recipeDAO.findAllByRecipeTypeIsAndIngredients_nameContainsIgnoreCase(recipeType, ingredientName);
         return createDTOFromRecipeList(recipes);
     }
-
-    public void addNewRecipe(RecipeDTO recipeDTO) {
-        Recipe recipe = new Recipe();
+    private void createRecipeFromDTO(RecipeDTO recipeDTO, Recipe recipe) {
         recipe.setName(recipeDTO.getName());
+        recipe.setRecipeType(recipeDTO.getRecipeType());
+        recipe.setText(recipeDTO.getText());
         Set<Ingredient> ingredientsOfRecipe = new HashSet<>();
         if (!recipeDTO.getIngredientNames().isEmpty()) {
             for (String ingredientName : recipeDTO.getIngredientNames()) {
                 ingredientsOfRecipe.add(ingredientDAO.findByNameContainsIgnoreCase(ingredientName));
             }
         }
-        recipe.setRecipeType(recipeDTO.getRecipeType());
-        recipe.setText(recipeDTO.getText());
         recipe.setIngredients(ingredientsOfRecipe);
-        recipeDAO.save(recipe);
     }
-    public void updateRecipe (Long id, RecipeDTO recipeDTO){
-        Recipe recipeToUpdate = recipeDAO.findById(id).orElse(null);
+    public void addNewRecipe(RecipeDTO recipeDTO) {
         Recipe recipe = new Recipe();
-        assert recipeToUpdate != null;
-        recipe.setId(recipeToUpdate.getId());
+        createRecipeFromDTO(recipeDTO, recipe);
         recipeDAO.save(recipe);
     }
-    /*TODO make the connection with ingredients*/
 
-    public void deleteRecipe(Long id){
-        recipeDAO.deleteById(id);
-        /*TODO make sure that deleting a recipe not deletes the ingredients also*/
+    public void updateRecipe(Long id, RecipeDTO recipeDTO) {
+        Recipe recipe = recipeDAO.findById(id).orElse(null);
+        assert recipe != null;
+        createRecipeFromDTO(recipeDTO, recipe);
+        recipeDAO.save(recipe);
     }
 
-    public List<RecipeDTO> createDTOFromRecipeList(List<Recipe> recipeList){
+    public void deleteRecipe(Long id) {
+        recipeDAO.deleteById(id);
+    }
+
+    public List<RecipeDTO> createDTOFromRecipeList(List<Recipe> recipeList) {
         return recipeList.stream()
                 .map(recipeMapper::toDTO)
                 .toList();
