@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -46,30 +45,41 @@ public class IngredientService {
         return createDTOFromIngredientList(ingredients);
     }
 
-    public void addIngredient(IngredientDTO ingredientDTO) {
-        Ingredient ingredient = new Ingredient();
-        ingredient.setId(ingredientDTO.getId());
-        ingredient.setName(ingredientDTO.getName());
+    private Set<Recipe> getRecipesFromIngredientDTO(IngredientDTO ingredientDTO) {
         Set<String> recipeNames = ingredientDTO.getRecipeNames();
         Set<Recipe> recipes = new HashSet<>();
-        if (!recipeNames.isEmpty()) {
+        if (!(recipeNames ==null)) {
             for (String recipeName : ingredientDTO.getRecipeNames()) {
                 recipes.add(recipeDAO.findByNameContainsIgnoreCase(recipeName));
             }
         }
+        return recipes;
+    }
+    public void addIngredient(IngredientDTO ingredientDTO) {
+        Ingredient ingredient = new Ingredient();
+        ingredient.setName(ingredientDTO.getName());
+        Set<Recipe> recipes = getRecipesFromIngredientDTO(ingredientDTO);
         ingredient.setRecipes(recipes);
         ingredientDAO.save(ingredient);
     }
-
     public void updateIngredient(Long id, IngredientDTO ingredientDTO) {
-        Optional<Ingredient> ingredient = ingredientDAO.findById(id);
-        /*TODO finish the method, make connection with recipes*/
-
-
+        Ingredient ingredient = ingredientDAO.findById(id).orElse(null);
+        assert ingredient != null;
+        ingredient.setName(ingredientDTO.getName());
+        Set<Recipe> recipes = getRecipesFromIngredientDTO(ingredientDTO);
+        if(!recipes.isEmpty()) {
+            ingredient.setRecipes(recipes);
+        }
+        ingredientDAO.save(ingredient);
     }
     public void deleteIngredient(Long id) {
+        Ingredient ingredient = ingredientDAO.findById(id).orElse(null);
+        assert ingredient != null;
+        List<Recipe> recipesWithIngredient = recipeDAO.findAllByIngredients_nameContainsIgnoreCase(ingredient.getName());
+        for (Recipe recipe : recipesWithIngredient) {
+            recipe.getIngredients().remove(ingredient);
+        }
         ingredientDAO.deleteById(id);
-        /*TODO make sure that not recipes will be deleted also*/
     }
 
 }
