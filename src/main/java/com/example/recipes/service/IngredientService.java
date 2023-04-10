@@ -62,9 +62,9 @@ public class IngredientService {
         ingredient.setRecipes(recipes);
         ingredientDAO.save(ingredient);
     }
+
     public void updateIngredient(Long id, IngredientDTO ingredientDTO) {
-        Ingredient ingredient = ingredientDAO.findById(id).orElse(null);
-        assert ingredient != null;
+        Ingredient ingredient = getIngredientByIdFromDatabase(id);
         ingredient.setName(ingredientDTO.getName());
         Set<Recipe> recipes = getRecipesFromIngredientDTO(ingredientDTO);
         if(!recipes.isEmpty()) {
@@ -72,9 +72,15 @@ public class IngredientService {
         }
         ingredientDAO.save(ingredient);
     }
-    public void deleteIngredient(Long id) {
+
+    private Ingredient getIngredientByIdFromDatabase(Long id) {
         Ingredient ingredient = ingredientDAO.findById(id).orElse(null);
         assert ingredient != null;
+        return ingredient;
+    }
+
+    public void deleteIngredient(Long id) {
+        Ingredient ingredient = getIngredientByIdFromDatabase(id);
         List<Recipe> recipesWithIngredient = recipeDAO.findAllByIngredients_nameContainsIgnoreCase(ingredient.getName());
         for (Recipe recipe : recipesWithIngredient) {
             recipe.getIngredients().remove(ingredient);
