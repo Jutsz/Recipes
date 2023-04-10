@@ -20,7 +20,6 @@ public class Ingredient {
     private Long id;
     private String name;
     @ManyToMany(mappedBy = "ingredients")
-//    @JsonIgnore
     private Set<Recipe> recipes;
 
     public void addRecipe (Recipe recipe){
