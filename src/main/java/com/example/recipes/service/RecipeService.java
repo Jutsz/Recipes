@@ -47,6 +47,7 @@ public class RecipeService {
         List<Recipe> recipes = recipeDAO.findAllByRecipeTypeIsAndIngredients_nameContainsIgnoreCase(recipeType, ingredientName);
         return createDTOFromRecipeList(recipes);
     }
+
     private void createRecipeFromDTO(RecipeDTO recipeDTO, Recipe recipe) {
         recipe.setName(recipeDTO.getName());
         recipe.setRecipeType(recipeDTO.getRecipeType());
@@ -54,14 +55,36 @@ public class RecipeService {
         Set<Ingredient> ingredientsOfRecipe = new HashSet<>();
         if (!recipeDTO.getIngredientNames().isEmpty()) {
             for (String ingredientName : recipeDTO.getIngredientNames()) {
-                ingredientsOfRecipe.add(ingredientDAO.findByNameContainsIgnoreCase(ingredientName));
+                Ingredient ingredient = ingredientDAO.findByNameContainsIgnoreCase(ingredientName);
+                if (ingredient != null) {
+                    ingredientsOfRecipe.add(ingredient);
+                } else {
+                    Ingredient newIngredient = new Ingredient();
+                    newIngredient.setName(ingredientName);
+                    ingredientsOfRecipe.add(newIngredient);
+                }
             }
         }
         recipe.setIngredients(ingredientsOfRecipe);
     }
+
     public void addNewRecipe(RecipeDTO recipeDTO) {
         Recipe recipe = new Recipe();
         createRecipeFromDTO(recipeDTO, recipe);
+        for (String ingredientName : recipeDTO.getIngredientNames()) {
+            Ingredient ingredient = ingredientDAO.findByNameContainsIgnoreCase(ingredientName);
+            Set<Recipe> recipesOfNewIngredient = new HashSet<>();
+            if (ingredientDAO.findAllByNameContainsIgnoreCase(ingredientName).stream().noneMatch(ingredient1 -> ingredient1.getName().contains(ingredientName))) {
+                Ingredient newIngredient = new Ingredient();
+                newIngredient.setName(ingredientName);
+                recipesOfNewIngredient.add(recipe);
+                newIngredient.setRecipes(recipesOfNewIngredient);
+                ingredientDAO.save(newIngredient);
+            } else {
+//                ingredient.addRecipe(recipe);
+                ingredientDAO.save(ingredient);
+            }
+        }
         recipeDAO.save(recipe);
     }
 
