@@ -31,6 +31,12 @@ public class Recipe {
             inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
     private Set<Ingredient> ingredients;
 
+    public void addIngredient (Ingredient ingredient) {
+        if (ingredients != null) {
+            ingredients.add(ingredient);
+        }
+    }
+
 
 
 }
