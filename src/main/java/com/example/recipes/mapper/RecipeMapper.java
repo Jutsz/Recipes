@@ -18,7 +18,7 @@ public class RecipeMapper {
                 .name(recipe.getName())
                 .recipeType(recipe.getRecipeType())
                 .text(recipe.getText())
-                .ingredientNames(recipe.getIngredients().stream().map(Ingredient::getName).collect(Collectors.toSet()))
+                .ingredientNames(recipe.getIngredients().stream().map(Ingredient::getName).collect(Collectors.toList()))
                 .build();
     }
 }
