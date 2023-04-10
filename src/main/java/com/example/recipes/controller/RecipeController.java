@@ -1,6 +1,5 @@
 package com.example.recipes.controller;
 
-import com.example.recipes.model.Recipe;
 import com.example.recipes.model.dto.RecipeDTO;
 import com.example.recipes.model.types.RecipeType;
 import com.example.recipes.service.RecipeService;
@@ -41,13 +40,13 @@ public class RecipeController {
     }
 
     @PostMapping
-    public void addNewRecipe(@RequestBody Recipe recipe) {
-        recipeService.addNewRecipe(recipe);
+    public void addNewRecipe(@RequestBody RecipeDTO recipeDTO) {
+        recipeService.addNewRecipe(recipeDTO);
     }
 
     @PutMapping("/update/{id}")
-    public void updateRecipe(@PathVariable Long id, @RequestBody Recipe recipe) {
-        recipeService.updateRecipe(id, recipe);
+    public void updateRecipe(@PathVariable Long id, @RequestBody RecipeDTO recipeDTO) {
+        recipeService.updateRecipe(id, recipeDTO);
     }
 
     @DeleteMapping("/delete/{id}")
