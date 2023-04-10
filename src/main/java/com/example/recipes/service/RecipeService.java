@@ -52,39 +52,26 @@ public class RecipeService {
         recipe.setName(recipeDTO.getName());
         recipe.setRecipeType(recipeDTO.getRecipeType());
         recipe.setText(recipeDTO.getText());
-        Set<Ingredient> ingredientsOfRecipe = new HashSet<>();
-        if (!recipeDTO.getIngredientNames().isEmpty()) {
-            for (String ingredientName : recipeDTO.getIngredientNames()) {
-                Ingredient ingredient = ingredientDAO.findByNameContainsIgnoreCase(ingredientName);
-                if (ingredient != null) {
-                    ingredientsOfRecipe.add(ingredient);
-                } else {
-                    Ingredient newIngredient = new Ingredient();
-                    newIngredient.setName(ingredientName);
-                    ingredientsOfRecipe.add(newIngredient);
-                }
+        List<String> ingredientNamesOfRecipe = recipeDTO.getIngredientNames();
+        Set<Ingredient> ingredients = new HashSet<>();
+        for (String ingredientName : ingredientNamesOfRecipe) {
+            if(ingredientDAO.findAll().stream().anyMatch(ingredient -> ingredient.getName().equals(ingredientName))){
+                ingredients.add(ingredientDAO.findByNameContainsIgnoreCase(ingredientName));
+            }
+            else{
+                Ingredient ingredient = new Ingredient();
+                ingredient.setName(ingredientName);
+                ingredient.setRecipes(new HashSet<>());
+                ingredients.add(ingredient);
             }
         }
-        recipe.setIngredients(ingredientsOfRecipe);
+        ingredients.forEach(ingredient -> ingredient.addRecipe(recipe));
+        recipe.setIngredients(ingredients);
     }
 
     public void addNewRecipe(RecipeDTO recipeDTO) {
         Recipe recipe = new Recipe();
         createRecipeFromDTO(recipeDTO, recipe);
-        for (String ingredientName : recipeDTO.getIngredientNames()) {
-            Ingredient ingredient = ingredientDAO.findByNameContainsIgnoreCase(ingredientName);
-            Set<Recipe> recipesOfNewIngredient = new HashSet<>();
-            if (ingredientDAO.findAllByNameContainsIgnoreCase(ingredientName).stream().noneMatch(ingredient1 -> ingredient1.getName().contains(ingredientName))) {
-                Ingredient newIngredient = new Ingredient();
-                newIngredient.setName(ingredientName);
-                recipesOfNewIngredient.add(recipe);
-                newIngredient.setRecipes(recipesOfNewIngredient);
-                ingredientDAO.save(newIngredient);
-            } else {
-//                ingredient.addRecipe(recipe);
-                ingredientDAO.save(ingredient);
-            }
-        }
         recipeDAO.save(recipe);
     }
 
