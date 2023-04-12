@@ -55,14 +55,15 @@ public class RecipeService {
         List<String> ingredientNamesOfRecipe = recipeDTO.getIngredientNames();
         Set<Ingredient> ingredients = new HashSet<>();
         for (String ingredientName : ingredientNamesOfRecipe) {
-            if(ingredientDAO.findAll().stream().anyMatch(ingredient -> ingredient.getName().equals(ingredientName))){
-                ingredients.add(ingredientDAO.findByNameContainsIgnoreCase(ingredientName));
+            Ingredient ingredient = ingredientDAO.findByNameContainsIgnoreCase(ingredientName);
+            if(ingredient!=null){
+                ingredients.add(ingredient);
             }
             else{
-                Ingredient ingredient = new Ingredient();
-                ingredient.setName(ingredientName);
-                ingredient.setRecipes(new HashSet<>());
-                ingredients.add(ingredient);
+                Ingredient newIngredient = new Ingredient();
+                newIngredient.setName(ingredientName);
+                newIngredient.setRecipes(new HashSet<>());
+                ingredients.add(newIngredient);
             }
         }
         ingredients.forEach(ingredient -> ingredient.addRecipe(recipe));
