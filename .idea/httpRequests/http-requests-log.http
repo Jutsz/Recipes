@@ -4,6 +4,16 @@ Connection: Keep-Alive
 User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
 Accept-Encoding: br,deflate,gzip,x-gzip
 
+<> 2023-04-14T144156.200.json
+
+###
+
+GET http://localhost:8080/ingredients
+Accept: application/json
+Connection: Keep-Alive
+User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
+Accept-Encoding: br,deflate,gzip,x-gzip
+
 <> 2023-04-10T181338.200.json
 
 ###
@@ -600,21 +610,6 @@ Accept-Encoding: br,deflate,gzip,x-gzip
 }
 
 <> 2023-04-10T145106.500.json
-
-###
-
-POST http://localhost:8080/ingredients
-Content-Type: application/json
-Content-Length: 24
-Connection: Keep-Alive
-User-Agent: Apache-HttpClient/4.5.13 (Java/17.0.5)
-Accept-Encoding: br,deflate,gzip,x-gzip
-
-{
-  "name" : "krumpli"
-}
-
-<> 2023-04-10T144816.500.json
 
 ###
 
