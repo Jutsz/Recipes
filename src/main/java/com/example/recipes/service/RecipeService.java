@@ -7,10 +7,12 @@ import com.example.recipes.model.dto.RecipeDTO;
 import com.example.recipes.model.types.RecipeType;
 import com.example.recipes.repository.IngredientDAO;
 import com.example.recipes.repository.RecipeDAO;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -30,12 +32,11 @@ public class RecipeService {
         return createDTOFromRecipeList(recipes);
     }
 
-    public RecipeDTO getRecipeById(Long id) {
+    public Optional <RecipeDTO> getRecipeById(Long id) {
         return recipeDAO.findById(id)
                 .stream()
                 .map(recipeMapper::toDTO)
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
 
     public List<RecipeDTO> getRecipeByIngredient(String ingredientName) {
@@ -70,17 +71,16 @@ public class RecipeService {
         recipe.setIngredients(ingredients);
     }
 
-    public void addNewRecipe(RecipeDTO recipeDTO) {
+    public Recipe addNewRecipe(@Valid RecipeDTO recipeDTO) {
         Recipe recipe = new Recipe();
         createRecipeFromDTO(recipeDTO, recipe);
-        recipeDAO.save(recipe);
+        return recipeDAO.save(recipe);
     }
 
-    public void updateRecipe(Long id, RecipeDTO recipeDTO) {
-        Recipe recipe = recipeDAO.findById(id).orElse(null);
-        assert recipe != null;
-        createRecipeFromDTO(recipeDTO, recipe);
-        recipeDAO.save(recipe);
+    public Optional<Recipe> updateRecipe(Long id, @Valid RecipeDTO recipeDTO) {
+        Optional<Recipe> recipe = recipeDAO.findById(id);
+        createRecipeFromDTO(recipeDTO, recipe.orElseThrow());
+        return Optional.of(recipeDAO.save(recipe.orElseThrow()));
     }
 
     public void deleteRecipe(Long id) {
