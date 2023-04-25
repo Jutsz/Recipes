@@ -6,10 +6,12 @@ import com.example.recipes.model.Recipe;
 import com.example.recipes.model.dto.IngredientDTO;
 import com.example.recipes.repository.IngredientDAO;
 import com.example.recipes.repository.RecipeDAO;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -35,9 +37,9 @@ public class IngredientService {
         return createDTOFromIngredientList(ingredients);
     }
 
-    public IngredientDTO getIngredientById(Long id) {
-        Ingredient ingredient = ingredientDAO.findById(id).orElse(null);
-        return ingredientMapper.toDTO(ingredient);
+    public Optional<IngredientDTO> getIngredientById(Long id) {
+        Ingredient ingredient = ingredientDAO.findById(id).orElseThrow();
+        return Optional.of(ingredientMapper.toDTO(ingredient));
     }
 
     public List<IngredientDTO> getIngredientByName(String ingredientName) {
@@ -62,26 +64,21 @@ public class IngredientService {
             ingredient.setRecipes(recipes);
         }
     }
-    public void addIngredient(IngredientDTO ingredientDTO) {
+    public void addIngredient(@Valid IngredientDTO ingredientDTO) {
         Ingredient ingredient = new Ingredient();
         createIngredientFromDTO(ingredientDTO, ingredient);
         ingredientDAO.save(ingredient);
     }
 
-    public void updateIngredient(Long id, IngredientDTO ingredientDTO) {
-        Ingredient ingredient = getIngredientByIdFromDatabase(id);
-        createIngredientFromDTO(ingredientDTO, ingredient);
-        ingredientDAO.save(ingredient);
-    }
-
-    private Ingredient getIngredientByIdFromDatabase(Long id) {
-        Ingredient ingredient = ingredientDAO.findById(id).orElse(null);
-        assert ingredient != null;
-        return ingredient;
+    public Optional<Ingredient> updateIngredient(Long id, @Valid IngredientDTO ingredientDTO) {
+        Optional<Ingredient> ingredient = ingredientDAO.findById(id);
+        createIngredientFromDTO(ingredientDTO, ingredient.orElseThrow());
+        return Optional.of(ingredientDAO.save(ingredient.orElseThrow()));
     }
 
     public void deleteIngredient(Long id) {
-        Ingredient ingredient = getIngredientByIdFromDatabase(id);
+        Optional<Ingredient> ingredientOptional = ingredientDAO.findById(id);
+        Ingredient ingredient = ingredientOptional.orElseThrow();
         List<Recipe> recipesWithIngredient = recipeDAO.findAllByIngredients_nameContainsIgnoreCase(ingredient.getName());
         for (Recipe recipe : recipesWithIngredient) {
             recipe.getIngredients().remove(ingredient);
