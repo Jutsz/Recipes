@@ -53,7 +53,7 @@ public class RecipeController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateRecipe(@PathVariable Long id, @RequestBody @Valid RecipeDTO recipeDTO, BindingResult errors) {
+    public ResponseEntity<String> updateRecipe(@PathVariable Long id, @RequestBody @Valid RecipeDTO recipeDTO) {
         if (Objects.equals(id, recipeDTO.getId()) && recipeService.updateRecipe(id, recipeDTO).isPresent()) {
             return ResponseEntity.ok().build();
         } else {
