@@ -1,6 +1,5 @@
 package com.example.recipes.controller;
 
-import com.example.recipes.model.Recipe;
 import com.example.recipes.model.dto.RecipeDTO;
 import com.example.recipes.model.types.RecipeType;
 import com.example.recipes.service.RecipeService;
@@ -29,27 +28,30 @@ public class RecipeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RecipeDTO> getRecipeById(@PathVariable("id")Long id) {
+    public ResponseEntity<RecipeDTO> getRecipeById(@PathVariable("id") Long id) {
         Optional<RecipeDTO> recipeDTO = recipeService.getRecipeById(id);
         return recipeDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/ingredient")
-    public List<RecipeDTO> getRecipeByIngredient(@RequestParam(name="ingredient") String ingredientName) {
+    public List<RecipeDTO> getRecipeByIngredient(@RequestParam(name = "ingredient") String ingredientName) {
         return recipeService.getRecipeByIngredient(ingredientName);
     }
 
     @GetMapping("/recipetype/ingredient")
-    public List<RecipeDTO> getRecipesWithRecipeTypeByIngredient(@RequestParam(name="recipeType") String recipeType,
-                                                                @RequestParam(name="ingredient") String ingredientName) {
+    public List<RecipeDTO> getRecipesWithRecipeTypeByIngredient(@RequestParam(name = "recipeType") String recipeType,
+                                                                @RequestParam(name = "ingredient") String ingredientName) {
         return recipeService.getRecipesWithRecipeTypeByIngredient
                 (RecipeType.valueOf(recipeType.toUpperCase()), ingredientName);
     }
 
     @PostMapping
-    public ResponseEntity<Recipe> addNewRecipe(@RequestBody @Valid RecipeDTO recipeDTO, BindingResult errors) {
+    public ResponseEntity<String> addNewRecipe(@RequestBody @Valid RecipeDTO recipeDTO, BindingResult errors) {
         if (errors.hasErrors()) return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(recipeService.addNewRecipe(recipeDTO));
+        else {
+            recipeService.addNewRecipe(recipeDTO);
+            return ResponseEntity.ok().build();
+        }
     }
 
     @PutMapping("/update/{id}")
