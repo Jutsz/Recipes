@@ -15,7 +15,7 @@ public class RecipeDTO {
     private Long id;
     @NotEmpty
     private String name;
-    @NotEmpty
+    @NotNull
     private RecipeType recipeType;
     @NotEmpty
     private String text;
