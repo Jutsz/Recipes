@@ -71,10 +71,10 @@ public class RecipeService {
         recipe.setIngredients(ingredients);
     }
 
-    public Recipe addNewRecipe(@Valid RecipeDTO recipeDTO) {
+    public void addNewRecipe(@Valid RecipeDTO recipeDTO) {
         Recipe recipe = new Recipe();
         createRecipeFromDTO(recipeDTO, recipe);
-        return recipeDAO.save(recipe);
+        recipeDAO.save(recipe);
     }
 
     public Optional<Recipe> updateRecipe(Long id, @Valid RecipeDTO recipeDTO) {
