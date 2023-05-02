@@ -31,14 +31,14 @@ public class IngredientController {
         return ingredientDTOOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+
     @GetMapping("/name")
-    public ResponseEntity<String> getIngredientByName(@RequestParam(name = "name") String ingredientName) {
+    public ResponseEntity<List<IngredientDTO>> getIngredientByName(@RequestParam(name = "name") String ingredientName) {
         List<IngredientDTO> ingredientDTOS = ingredientService.getIngredientByName(ingredientName);
         if (ingredientDTOS.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(ingredientDTOS.toString());
-
+        return ResponseEntity.ok(ingredientDTOS);
     }
 
     @PostMapping
