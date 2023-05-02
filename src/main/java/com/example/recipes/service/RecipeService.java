@@ -50,6 +50,7 @@ public class RecipeService {
     }
 
     private void createRecipeFromDTO(RecipeDTO recipeDTO, Recipe recipe) {
+        if (recipeDTO.getId()!=null) recipe.setId(recipeDTO.getId());
         recipe.setName(recipeDTO.getName());
         recipe.setRecipeType(recipeDTO.getRecipeType());
         recipe.setText(recipeDTO.getText());
@@ -78,9 +79,9 @@ public class RecipeService {
     }
 
     public Optional<Recipe> updateRecipe(Long id, @Valid RecipeDTO recipeDTO) {
-        Optional<Recipe> recipe = recipeDAO.findById(id);
-        createRecipeFromDTO(recipeDTO, recipe.orElseThrow());
-        return Optional.of(recipeDAO.save(recipe.orElseThrow()));
+        Recipe recipe = recipeDAO.findById(id).orElseThrow();
+        createRecipeFromDTO(recipeDTO, recipe);
+        return Optional.of(recipeDAO.save(recipe));
     }
 
     public void deleteRecipe(Long id) {
