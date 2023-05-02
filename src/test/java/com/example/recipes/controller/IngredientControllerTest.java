@@ -12,17 +12,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
-import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.when;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -30,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class IngredientControllerTest {
+class IngredientControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -55,7 +52,7 @@ public class IngredientControllerTest {
 
         mockMvc.perform(get("/ingredients/1"))
                 .andExpect(status().isOk())
-                .andExpect((ResultMatcher) jsonPath("$.name", is("salt")));
+                .andExpect(jsonPath("$[0].name").value("salt"));
     }
 
     @Test
@@ -129,4 +126,6 @@ public class IngredientControllerTest {
     @Test
     public void testUpdateIngredientNotFound() throws Exception {
     }
+
+
 }
