@@ -18,7 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class IngredientServiceTest {
@@ -81,7 +81,7 @@ class IngredientServiceTest {
     }
 
     @Test
-    void testGetAllIngredient() {
+    void shouldReturnAllIngredient() {
         IngredientDTO ingredientDTO1 = new IngredientDTO();
         ingredientDTO1.setId(1L);
         ingredientDTO1.setName(ingredientList.get(0).getName());
@@ -132,14 +132,50 @@ class IngredientServiceTest {
     }
 
     @Test
-    void addIngredient() {
+    void addNewIngredientIsSuccessful() {
+        Ingredient ingredientToAdd = ingredientList.get(0);
+        IngredientDTO ingredientDTOToAdd = new IngredientDTO(1L, ingredientToAdd.getName(), new HashSet<>());
+        ingredientService.addIngredient(ingredientDTOToAdd);
+        verify(ingredientDAO, times(1)).save(ingredientToAdd);
     }
 
     @Test
-    void updateIngredient() {
+    void updateIngredientIsSuccessful() {
+        Ingredient originalIngredientToUpdate = ingredientList.get(0);
+        IngredientDTO ingredientDTOToUpdate = new IngredientDTO(1L, originalIngredientToUpdate.getName()+"_updated", new HashSet<>());
+        when(ingredientDAO.findById(1L)).thenReturn(Optional.of(originalIngredientToUpdate));
+        when(ingredientDAO.save(any(Ingredient.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        assertFalse(originalIngredientToUpdate.getName().contains("updated"));
+        Optional<Ingredient> updatedIngredientOptional = ingredientService.updateIngredient(1L, ingredientDTOToUpdate);
+        assertTrue(updatedIngredientOptional.isPresent());
+        Ingredient updatedIngredient = updatedIngredientOptional.get();
+        assertEquals(1L, updatedIngredient.getId());
+        assertEquals(ingredientDTOToUpdate.getName(), updatedIngredient.getName());
+        assertTrue(updatedIngredient.getName().contains("updated"));
+
     }
 
     @Test
-    void deleteIngredient() {
+    void deleteIngredient_removesIngredientFromRecipeAndDeletesFromRepository() {
+
+        Long ingredientId = 1L;
+        Ingredient ingredient = new Ingredient();
+        ingredient.setId(ingredientId);
+        ingredient.setName("Test Ingredient");
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+        recipe.setName("Test Recipe");
+        Set<Ingredient> ingredientSet = new HashSet<>();
+        ingredientSet.add(ingredient);
+        recipe.setIngredients(ingredientSet);
+        List<Recipe> recipeList = new ArrayList<>();
+        recipeList.add(recipe);
+        when(ingredientDAO.findById(ingredientId)).thenReturn(Optional.of(ingredient));
+        when(recipeDAO.findAllByIngredients_nameContainsIgnoreCase("Test Ingredient")).thenReturn(recipeList);
+
+        ingredientService.deleteIngredient(ingredientId);
+
+        verify(ingredientDAO).deleteById(ingredientId);
+        assert(recipe.getIngredients().isEmpty());
     }
 }
