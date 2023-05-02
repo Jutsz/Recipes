@@ -10,14 +10,17 @@ import com.example.recipes.repository.RecipeDAO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class IngredientServiceTest {
     @Mock
     private IngredientDAO ingredientDAO;
@@ -93,7 +96,7 @@ class IngredientServiceTest {
 
         List<IngredientDTO> ingredientDTOList = ingredientService.getAllIngredient();
 
-        assertEquals(2, ingredientDTOList.size());
+        assertEquals(12, ingredientDTOList.size());
         assertEquals("olaj", ingredientDTOList.get(0).getName());
         assertEquals("hagyma", ingredientDTOList.get(1).getName());
     }
@@ -114,7 +117,18 @@ class IngredientServiceTest {
     }
 
     @Test
-    void getIngredientByName() {
+    void shouldReturnIngredientByName() {
+        Ingredient ingredient = ingredientList.get(0);
+        IngredientDTO ingredientDTO = new IngredientDTO();
+        String ingredientName = ingredient.getName();
+        ingredientDTO.setName(ingredientName);
+        when(ingredientDAO.findAllByNameContainsIgnoreCase(ingredientName)).thenReturn(List.of(ingredient));
+        when(ingredientMapper.toDTO(ingredient)).thenReturn(ingredientDTO);
+
+        List<IngredientDTO> result = ingredientService.getIngredientByName(ingredientName);
+
+        assertEquals("olaj", result.get(0).getName());
+
     }
 
     @Test
