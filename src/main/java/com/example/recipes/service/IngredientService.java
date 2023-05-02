@@ -37,10 +37,13 @@ public class IngredientService {
         return createDTOFromIngredientList(ingredients);
     }
 
+
+
     public Optional<IngredientDTO> getIngredientById(Long id) {
-        Ingredient ingredient = ingredientDAO.findById(id).orElseThrow();
-        return Optional.of(ingredientMapper.toDTO(ingredient));
+        Optional<Ingredient> ingredientOptional = ingredientDAO.findById(id);
+        return ingredientOptional.map(ingredientMapper::toDTO);
     }
+
 
     public List<IngredientDTO> getIngredientByName(String ingredientName) {
         List<Ingredient> ingredients = ingredientDAO.findAllByNameContainsIgnoreCase(ingredientName);
