@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import lombok.*;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -29,5 +30,16 @@ public class Recipe {
             inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
     private Set<Ingredient> ingredients;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Recipe recipe = (Recipe) o;
+        return Objects.equals(id, recipe.id) && Objects.equals(name, recipe.name) && recipeType == recipe.recipeType && Objects.equals(text, recipe.text) && ingredients.containsAll(recipe.ingredients);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, recipeType, text, ingredients);
+    }
 }
