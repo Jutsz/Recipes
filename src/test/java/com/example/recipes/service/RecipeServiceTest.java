@@ -7,7 +7,7 @@ import com.example.recipes.model.dto.RecipeDTO;
 import com.example.recipes.model.types.RecipeType;
 import com.example.recipes.repository.IngredientDAO;
 import com.example.recipes.repository.RecipeDAO;
-
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
@@ -38,7 +37,7 @@ class RecipeServiceTest {
     @InjectMocks
     RecipeService recipeService;
 
-    private static final List<Recipe> recipeList = new ArrayList<>();
+    private static List<Recipe> recipeList = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
@@ -57,17 +56,33 @@ class RecipeServiceTest {
         Ingredient fokhagyma = new Ingredient(6L, "fokhagyma", new HashSet<>());
         Ingredient brokkoli = new Ingredient(7L, "brokkoli", new HashSet<>());
         Ingredient tészta = new Ingredient(8L, "tészta", new HashSet<>());
-        Ingredient tejszín = new Ingredient(9L, "tejszín", new HashSet<>());
+        Ingredient tej = new Ingredient(9L, "tejszín", new HashSet<>());
         Recipe brokkolisTészta = new Recipe(2L, "brokkolis tészta", RecipeType.EBÉD,
-                "készítsünk brokkolis tésztát", Set.of(hagyma, fokhagyma, brokkoli, tészta, tejszín));
+                "készítsünk brokkolis tésztát", Set.of(olaj, hagyma, fokhagyma, brokkoli, tészta, tej));
+        olaj.addRecipe(brokkolisTészta);
         fokhagyma.addRecipe(brokkolisTészta);
         brokkoli.addRecipe(brokkolisTészta);
         tészta.addRecipe(brokkolisTészta);
-        tejszín.addRecipe(brokkolisTészta);
+        tej.addRecipe(brokkolisTészta);
         hagyma.addRecipe(brokkolisTészta);
+        Ingredient zabpehely = new Ingredient(10L, "zabpehely", new HashSet<>());
+        Recipe zabkása = new Recipe(3L, "zabkása", RecipeType.REGGELI, "keverjük össze az alapanyagokat", Set.of(zabpehely, tej));
+        zabpehely.addRecipe(zabkása);
+        tej.addRecipe(zabkása);
+        Ingredient zsír = new Ingredient(11L, "zsír", new HashSet<>());
+        Ingredient tojás = new Ingredient(12L, "tojás", new HashSet<>());
+        Recipe rántotta = new Recipe(4L, "rántotta", RecipeType.REGGELI, "süssünk rántottát", Set.of(zsír, tojás));
+        zsír.addRecipe(rántotta);
+        tojás.addRecipe(rántotta);
         recipeList.add(rizseshús);
         recipeList.add(brokkolisTészta);
+        recipeList.add(zabkása);
+        recipeList.add(rántotta);
+    }
 
+    @AfterEach
+    void clear() {
+        recipeList = new ArrayList<>();
     }
 
     List<RecipeDTO> convertRecipeListToDto(List<Recipe> recipeList) {
@@ -107,19 +122,46 @@ class RecipeServiceTest {
     void shouldReturnRecipeWhenGetRecipeById() {
         Recipe recipeToFind = recipeList.get(0);
         Long idOfRecipeToFind = recipeToFind.getId();
-        Optional<RecipeDTO> expectedRecipeDTO = Optional.of(convertRecipeListToDto(List.of(recipeToFind)).get(0));
+        RecipeDTO expectedRecipeDTO = convertRecipeListToDto(List.of(recipeToFind)).get(0);
         when(recipeDAO.findById(idOfRecipeToFind)).thenReturn(Optional.of(recipeToFind));
-//        doReturn(expectedRecipeDTO).when(recipeMapper.toDTO(recipeToFind));
-        when(recipeMapper.toDTO(recipeToFind)).thenReturn(convertRecipeListToDto(List.of(recipeToFind)).get(0));
-        assertEquals(expectedRecipeDTO, recipeService.getRecipeById(idOfRecipeToFind));
+        when(recipeMapper.toDTO(recipeToFind)).thenReturn(expectedRecipeDTO);
+        assertEquals(Optional.of(expectedRecipeDTO), recipeService.getRecipeById(idOfRecipeToFind));
     }
 
     @Test
-    void getRecipeByIngredient() {
+    void shouldReturnOneRecipeByIngredient() {
+        Recipe recipeToFind = recipeList.get(0);
+        when(recipeDAO.findAllByIngredients_nameContainsIgnoreCase("pirospaprika")).thenReturn(List.of(recipeToFind));
+        RecipeDTO expectedRecipeDTO = convertRecipeListToDto(List.of(recipeToFind)).get(0);
+        when(recipeMapper.toDTO(recipeToFind)).thenReturn(expectedRecipeDTO);
+        assertEquals(expectedRecipeDTO, recipeService.getRecipeByIngredient("pirospaprika").get(0));
     }
 
     @Test
-    void getRecipesWithRecipeTypeByIngredient() {
+    void shouldReturnTwoRecipeByIngredient() {
+        List <Recipe> expectedRecipes = List.of(recipeList.get(0), recipeList.get(1));
+        when(recipeDAO.findAllByIngredients_nameContainsIgnoreCase("olaj")).thenReturn(expectedRecipes);
+        List<RecipeDTO> expectedRecipeDTOList = convertRecipeListToDto(expectedRecipes);
+        for (int i = 0; i < expectedRecipes.size(); i++) {
+            doReturn(convertRecipeListToDto(expectedRecipes).get(i)).when(recipeMapper).toDTO(expectedRecipes.get(i));
+        }
+        assertEquals(expectedRecipeDTOList, recipeService.getRecipeByIngredient("olaj"));
+        assertEquals(2, recipeService.getRecipeByIngredient("olaj").size());
+    }
+
+    @Test
+    void shouldReturnTwoRecipesWithRecipeTypeByIngredient() {
+
+    }
+
+    @Test
+    void shouldReturnOneRecipesWithRecipeTypeByIngredient() {
+
+    }
+
+    @Test
+    void shouldReturnEmptyRecipesWithRecipeTypeByIngredient() {
+
     }
 
     @Test
