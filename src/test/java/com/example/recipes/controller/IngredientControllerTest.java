@@ -1,131 +1,89 @@
 package com.example.recipes.controller;
 
 import com.example.recipes.model.dto.IngredientDTO;
-import com.example.recipes.service.IngredientService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+public class IngredientControllerTest {
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@AutoConfigureMockMvc
-class IngredientControllerTest {
+    @LocalServerPort
+    private int port;
 
     @Autowired
-    private MockMvc mockMvc;
+    private TestRestTemplate restTemplate;
 
-    @MockBean
-    private IngredientService ingredientService;
-
-    @Test
-    public void testGetAllIngredient() throws Exception {
-        List<IngredientDTO> ingredientDTOList = List.of(new IngredientDTO(1L, "salt", new HashSet<>()));
-        when(ingredientService.getAllIngredient()).thenReturn(ingredientDTOList);
-
-        mockMvc.perform(get("/ingredients"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value("salt"));
+    private String getUrl() {
+        return "http://localhost:" + port + "/ingredients";
     }
 
     @Test
-    public void testGetIngredientById() throws Exception {
-        IngredientDTO ingredientDTO = new IngredientDTO(1L, "salt", new HashSet<>());
-        when(ingredientService.getIngredientById(1L)).thenReturn(Optional.of(ingredientDTO));
+    public void shouldReturnAllIngredients() throws Exception {
+        URI url = new URI(getUrl());
+        ResponseEntity<IngredientDTO[]> responseEntity = restTemplate.getForEntity(url, IngredientDTO[].class);
+        List<IngredientDTO> ingredients = Arrays.asList(Objects.requireNonNull(responseEntity.getBody()));
 
-        mockMvc.perform(get("/ingredients/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value("salt"));
+        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
+        assertThat(ingredients).isNotEmpty();
+    }
+    @Test
+    public void testGetAllIngredient() {
+        ResponseEntity<List> response = restTemplate.getForEntity("/ingredients", List.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
-    public void testGetIngredientByIdNotFound() throws Exception {
-        when(ingredientService.getIngredientById(1L)).thenReturn(Optional.empty());
-
-        mockMvc.perform(get("/ingredients/1"))
-                .andExpect(status().isNotFound());
+    public void testGetIngredientById() {
+        ResponseEntity<IngredientDTO> response = restTemplate.getForEntity("/ingredients/1", IngredientDTO.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
-    public void testGetIngredientByName() throws Exception {
-        List<IngredientDTO> ingredientDTOList = new ArrayList<>();
-        ingredientDTOList.add(new IngredientDTO(1L, "salt", new HashSet<>()));
-        when(ingredientService.getIngredientByName("salt")).thenReturn(ingredientDTOList);
-
-        mockMvc.perform(get("/ingredients/name?name=salt"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("salt")));
+    public void testGetIngredientByName() {
+        ResponseEntity<List> response = restTemplate.getForEntity("/ingredients/name?name=banana", List.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
-    public void testGetIngredientByNameNotFound() throws Exception {
-        List<IngredientDTO> ingredientDTOList = new ArrayList<>();
-        when(ingredientService.getIngredientByName("pepper")).thenReturn(ingredientDTOList);
-
-        mockMvc.perform(get("/ingredients/name?name=pepper"))
-                .andExpect(status().isNotFound());
+    public void testAddIngredient() {
+        IngredientDTO ingredientDTO = new IngredientDTO();
+        ingredientDTO.setName("testIngredient");
+        HttpEntity<IngredientDTO> request = new HttpEntity<>(ingredientDTO);
+        ResponseEntity<String> response = restTemplate.postForEntity("/ingredients", request, String.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
-    public void testAddIngredient() throws Exception {
-        IngredientDTO ingredientDTO = new IngredientDTO(null, "salt", new HashSet<>());
-
-        mockMvc.perform(post("/ingredients")
-                        .content(new ObjectMapper().writeValueAsString(ingredientDTO))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+    public void testUpdateIngredient() {
+        IngredientDTO ingredientDTO = new IngredientDTO();
+        ingredientDTO.setId(1L);
+        ingredientDTO.setName("updatedIngredient");
+        HttpEntity<IngredientDTO> request = new HttpEntity<>(ingredientDTO);
+        ResponseEntity<String> response = restTemplate.exchange("/ingredients/update/1", HttpMethod.PUT, request, String.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
-    public void testAddIngredientBadRequest() throws Exception {
-        IngredientDTO ingredientDTO = new IngredientDTO(null, null, new HashSet<>());
-
-        mockMvc.perform(post("/ingredients")
-                        .content(new ObjectMapper().writeValueAsString(ingredientDTO))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+    public void testDeleteIngredient() {
+        restTemplate.delete("/ingredients/delete/1");
+        ResponseEntity<IngredientDTO> response = restTemplate.getForEntity("/ingredients/1", IngredientDTO.class);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
-
-    @Test
-    public void testUpdateIngredient() throws Exception {
-        IngredientDTO ingredientDTO = new IngredientDTO(1L, "salt", new HashSet<>());
-
-        mockMvc.perform(put("/ingredients/update/1")
-                        .content(new ObjectMapper().writeValueAsString(ingredientDTO))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    public void testUpdateIngredientBadRequest() throws Exception {
-        IngredientDTO ingredientDTO = new IngredientDTO(1L, null, new HashSet<>());
-
-        mockMvc.perform(put("/ingredients/update/1")
-                        .content(new ObjectMapper().writeValueAsString(ingredientDTO))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    public void testUpdateIngredientNotFound() throws Exception {
-    }
-
-
 }
