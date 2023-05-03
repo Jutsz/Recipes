@@ -29,7 +29,7 @@ public class RecipeController {
     @Operation(
             summary = "Get all recipes of the cookbook",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Responds with a list of Recipe entities."),
+                    @ApiResponse(responseCode = "200", description = "Responds with a list of recipes."),
             }
     )
     @GetMapping
@@ -40,8 +40,8 @@ public class RecipeController {
     @Operation(
             summary = "Get a recipe by id",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Responds with a recipe with a given id"),
-                    @ApiResponse(responseCode = "404", description = "Recipe by the given id not found.")
+                    @ApiResponse(responseCode = "200", description = "Responds with a recipe that matches the given ID."),
+                    @ApiResponse(responseCode = "404", description = "No recipe was found with the given id.")
             }
     )
     @GetMapping("/{id}")
@@ -51,10 +51,10 @@ public class RecipeController {
     }
 
     @Operation(
-            summary = "Get a recipe by an ingredient",
+            summary = "Get a list of recipes that include the specified ingredient.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Responds with a recipe with a given ingredient"),
-                    @ApiResponse(responseCode = "404", description = "Recipe with the given id not found.")
+                    @ApiResponse(responseCode = "200", description = "Responds with a recipe that contains the given ingredient"),
+                    @ApiResponse(responseCode = "404", description = "No recipe was found with the given ingredient.")
             }
     )
     @GetMapping("/ingredient")
@@ -68,10 +68,10 @@ public class RecipeController {
     }
 
     @Operation(
-            summary = "Get a recipe by an ingredient, in a given recipe type",
+            summary = "Get a list of recipes by an ingredient, in a given recipe type",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Responds with a recipe in the given recipe type, with the given ingredient"),
-                    @ApiResponse(responseCode = "404", description = "Recipe with the given ingredient and recipe type not found.")
+                    @ApiResponse(responseCode = "200", description = "Responds with a list of recipes in the specified recipe type that contain the given ingredient."),
+                    @ApiResponse(responseCode = "404", description = "No recipe found with the specified ingredient and recipe type.")
             }
     )
     @GetMapping("/recipetype/ingredient")
@@ -121,12 +121,11 @@ public class RecipeController {
     }
 
     @Operation(
-            summary = "Delete a recipe in the cookbook with a given id.",
+            summary = "Delete a recipe from the cookbook with a given id.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "The recipe has been deleted from the cookbook.",
                             content = { @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = RecipeDTO.class)) }),
-                    @ApiResponse(responseCode = "500", description = "There is no recipe with the given id in the cookbook.")
             }
     )
     @DeleteMapping("/delete/{id}")
