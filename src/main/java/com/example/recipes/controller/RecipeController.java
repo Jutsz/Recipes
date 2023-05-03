@@ -34,15 +34,23 @@ public class RecipeController {
     }
 
     @GetMapping("/ingredient")
-    public List<RecipeDTO> getRecipeByIngredient(@RequestParam(name = "ingredient") String ingredientName) {
-        return recipeService.getRecipeByIngredient(ingredientName);
+    public ResponseEntity<List<RecipeDTO>> getRecipeByIngredient(@RequestParam(name = "ingredient") String ingredientName) {
+        List<RecipeDTO> recipeDTOList = recipeService.getRecipeByIngredient(ingredientName);
+        if (!recipeDTOList.isEmpty()) {
+            return ResponseEntity.ok(recipeDTOList);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/recipetype/ingredient")
-    public List<RecipeDTO> getRecipesWithRecipeTypeByIngredient(@RequestParam(name = "recipeType") String recipeType,
+    public ResponseEntity<List<RecipeDTO>> getRecipesWithRecipeTypeByIngredient(@RequestParam(name = "recipeType") String recipeType,
                                                                 @RequestParam(name = "ingredient") String ingredientName) {
-        return recipeService.getRecipesWithRecipeTypeByIngredient
+        List<RecipeDTO> recipeDTOList = recipeService.getRecipesWithRecipeTypeByIngredient
                 (RecipeType.valueOf(recipeType.toUpperCase()), ingredientName);
+        if (recipeDTOList.isEmpty()){
+            return ResponseEntity.notFound().build();
+        } else return ResponseEntity.ok(recipeDTOList);
     }
 
     @PostMapping
