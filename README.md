@@ -27,10 +27,20 @@ Name
 Recipes (the set of recipes in which the ingredient is used)
 
 ## Functionality
-To start the application, use the docker_build.sh and docker_run.sh scripts. 
-To test the application, use the Recipes_requests.http file to send HTTP requests. 
+
+### Starting the application
+To start the application, you can run `RecipesApplication` in your IDE.
+To start the application with docker, use the docker_build.sh and docker_run.sh scripts. 
+
+### Testing the application
+To test the application, use the Recipes_requests.http file to send HTTP requests.
+You can also test the application with running `src/test/java/com/example/recipes` folder.
+
+### Documentation
 Additionally, you can use Swagger at http://localhost:8080/swagger-ui/index.html after starting the application 
-to interact with the endpoints.
+to interact with the endpoints. (If you have started with docker: http://localhost/swagger-ui/index.html).
+
+
 
 ### Recipe Management
 
