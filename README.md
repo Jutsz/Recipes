@@ -55,6 +55,7 @@ to interact with the endpoints. (If you have started with docker: http://localho
 `DELETE /recipes/delete/{id}`: Delete a recipe from the cookbook with a given id.
 
 ### Ingredient Management
+
 `GET /ingredients`: Get all ingredients of the cookbook. The response should include an array of `IngredientDTO` objects.
 `GET /ingredients/{id}`: Get an ingredient by id. The response should include a single `IngredientDTO` object.
 `GET /ingredients/name`: Get a list of ingredients matching the provided name. The response should include an array of `IngredientDTO` objects.
