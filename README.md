@@ -42,8 +42,6 @@ You can also test the application with running `src/test/java/com/example/recipe
 Additionally, you can use Swagger at http://localhost:8080/swagger-ui/index.html after starting the application 
 to interact with the endpoints. (If you have started with docker: http://localhost/swagger-ui/index.html).
 
-
-
 ### Recipe Management
 
 `GET /recipes`: Get all recipes of the cookbook. The response should include an array of `RecipeDTO` objects.
