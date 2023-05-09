@@ -14,18 +14,18 @@ The application includes two entities: `Recipe` and `Ingredient`.
 
 The `Recipe` entity consists of the following fields:
 
-Id
-Name
-Recipe type (an enumeration)
-Text (the full text of the recipe)
+Id,
+Name,
+Recipe type (an enumeration),
+Text (the full text of the recipe),
 Ingredients
 
 ### Ingredient
 
 The `Ingredient` entity consists of the following fields:
 
-Id
-Name
+Id,
+Name,
 Recipes (the set of recipes in which the ingredient is used)
 
 ## Functionality
