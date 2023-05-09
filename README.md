@@ -5,6 +5,8 @@ allowing users to add, update, delete, and search for recipes in a cookbook.
 A recipe can be located using its ingredients and recipe type.
 An ingredient can be located using its name.
 
+The data in the application is currently test data. The next step in the project will involve implementing real data.
+
 ## Entities
 The application includes two entities: `Recipe` and `Ingredient`.
 
