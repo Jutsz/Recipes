@@ -40,7 +40,7 @@ You can also test the application with running `src/test/java/com/example/recipe
 
 ### Documentation
 Additionally, you can use Swagger at http://localhost:8080/swagger-ui/index.html after starting the application 
-to interact with the endpoints. (If you have started with docker: http://localhost/swagger-ui/index.html).
+to interact with the endpoints. (If you are running with docker: http://localhost/swagger-ui/index.html).
 
 ### Recipe Management
 
