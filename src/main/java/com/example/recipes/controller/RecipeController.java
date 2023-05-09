@@ -27,7 +27,7 @@ public class RecipeController {
     }
 
     @Operation(
-            summary = "Get all recipes of the cookbook",
+            summary = "Get all recipes of the cookbook.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Responds with a list of recipes."),
             }
@@ -38,7 +38,7 @@ public class RecipeController {
     }
 
     @Operation(
-            summary = "Get a recipe by id",
+            summary = "Get a recipe by id.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Responds with a recipe that matches the given ID."),
                     @ApiResponse(responseCode = "404", description = "No recipe was found with the given id.")
@@ -68,7 +68,7 @@ public class RecipeController {
     }
 
     @Operation(
-            summary = "Get a list of recipes by an ingredient, in a given recipe type",
+            summary = "Get a list of recipes by an ingredient, in a given recipe type.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Responds with a list of recipes in the specified recipe type that contain the given ingredient."),
                     @ApiResponse(responseCode = "404", description = "No recipe found with the specified ingredient and recipe type.")
@@ -85,7 +85,7 @@ public class RecipeController {
     }
 
     @Operation(
-            summary = "Add a new recipe to the cookbook",
+            summary = "Add a new recipe to the cookbook.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "The recipe has been added to the cookbook.",
                             content = { @Content(mediaType = "application/json",
@@ -103,7 +103,7 @@ public class RecipeController {
     }
 
     @Operation(
-            summary = "Update a recipe in the cookbook wih a given id.",
+            summary = "Update a recipe in the cookbook with a given id.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "The recipe has been updated in the cookbook.",
                             content = { @Content(mediaType = "application/json",

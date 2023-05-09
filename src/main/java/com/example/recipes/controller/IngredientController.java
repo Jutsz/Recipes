@@ -25,7 +25,7 @@ public class IngredientController {
     }
 
     @Operation(
-            summary = "Get all ingredients of the cookbook",
+            summary = "Get all ingredients of the cookbook.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Responds with a list of ingredients."),
             }
