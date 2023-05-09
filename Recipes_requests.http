@@ -1,7 +1,11 @@
+### get all recipes
+GET http://localhost:8080/recipes
+
+### get all ingredients
 GET http://localhost:8080/ingredients
 Accept: application/json
 
-###
+### post a new ingredient
 POST http://localhost:8080/ingredients
 Content-Type: application/json
 
@@ -9,9 +13,7 @@ Content-Type: application/json
   "name" : "krumpli"
 }
 
-
-###
-
+### response with bad request (empty name for the ingredient when posting)
 POST http://localhost:8080/ingredients
 Content-Type: application/json
 
@@ -20,8 +22,7 @@ Content-Type: application/json
 }
 
 
-###
-
+### post a new recipe
 POST http://localhost:8080/recipes
 Content-Type: application/json
 
@@ -33,7 +34,7 @@ Content-Type: application/json
     "hagyma", "krumpli", "tészta", "olaj"
   ]}
 
-###
+### response with bad request - ingredientNames are empty when posting a recipe
 
 POST http://localhost:8080/recipes
 Content-Type: application/json
@@ -46,12 +47,6 @@ Content-Type: application/json
 
 ]}
 
-###
-GET http://localhost:8080/recipes/ingredient
-Accept: application/json
-
-###
-GET http://localhost:8080/recipes
 
 
-###
+
