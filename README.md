@@ -31,7 +31,7 @@ Recipes (the set of recipes in which the ingredient is used)
 ## Functionality
 
 ### Starting the application
-To start the application, you can run `RecipesApplication` in your IDE.
+To start the application, you can run `RecipesApplication` (`src/main/java/com/example/recipes/RecipesApplication.java`) in your IDE.
 To start the application with docker, use the docker_build.sh and docker_run.sh scripts. 
 
 ### Testing the application
